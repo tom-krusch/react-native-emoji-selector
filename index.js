@@ -351,10 +351,7 @@ EmojiSelector.propTypes = {
   onEmojiSelected: PropTypes.func.isRequired,
 
   /** Theme color used for loaders and active tab indicator */
-  theme: PropTypes.oneOfType([
-    PropTypes.string, // legacy
-    PropTypes.object
-  ]),
+  theme: PropTypes.string,
 
   /** Placeholder of search input */
   placeholder: PropTypes.string,
@@ -423,7 +420,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexWrap: "wrap",
-    flexDirection: "row"
+    flexDirection: "row",
+    alignItems: "flex-start"
   },
   sectionHeader: {
     margin: 8,
