@@ -9,11 +9,12 @@ import {
   Platform,
   Dimensions,
   ActivityIndicator,
-  AsyncStorage,
   FlatList
 } from "react-native";
 import emoji from "emoji-datasource";
 import "string.fromcodepoint";
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const Categories = {
   all: {
