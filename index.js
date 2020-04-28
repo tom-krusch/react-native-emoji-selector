@@ -15,45 +15,58 @@ import "string.fromcodepoint";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-const translations = {
-  de: {
-    all: 'Alle',
-    history: 'OFT BENUTZT',
-    people: 'SMILESYS & PERSONEN',
-    nature: 'TIERE & NATUR',
-    food: 'ESSEN & TRINKEN',
-    activities: 'AKTIVITÄT',
-    places: 'REISEN & ORTE',
-    objects: 'OBJEKTE',
-    symbols: 'SYMBOLE',
-    flags: 'FLAGGEN'
+export const Categories = {
+  all: {
+    symbol: null,
+    name: "All",
+    de: 'Alle'
   },
-  en: {
-    all: 'ALL',
-    history: 'FREQUENTLY USED',
-    people: 'SMILESYS & PEOPLE',
-    nature: 'ANIMALS & NATURE',
-    food: 'FOOD & DRINK',
-    activities: 'ACTIVITY',
-    places: 'TRAVEL & PLACES',
-    objects: 'OBJECTS',
-    symbols: 'SYMBOLS',
-    flags: 'FLAGS'
+  history: {
+    symbol: "🕘",
+    name: "Recently used",
+    de: 'OFT BENUTZT'
+  },
+  people: {
+    symbol: "😊",
+    name: "Smileys & People",
+    de: 'SMILESYS & PERSONEN',
+  },
+  nature: {
+    symbol: "🦄",
+    name: "Animals & Nature",
+    de: 'TIERE & NATUR',
+  },
+  food: {
+    symbol: "🍔",
+    name: "Food & Drink",
+    de: 'ESSEN & TRINKEN'
+  },
+  activities: {
+    symbol: "⚾️",
+    name: "Activities",
+    de:'AKTIVITÄT',
+  },
+  places: {
+    symbol: "✈️",
+    name: "Travel & Places",
+    de:'REISEN & ORTE',
+  },
+  objects: {
+    symbol: "💡",
+    name: "Objects",
+    de:'OBJEKTE',
+  },
+  symbols: {
+    symbol: "🔣",
+    name: "Symbols",
+    de:'SYMBOLE',
+  },
+  flags: {
+    symbol: "🏳️‍🌈",
+    name: "Flags",
+    de: 'FLAGGEN'
   }
 }
-
-export const Categories = {
-  all: null,
-  history: "🕘",
-  people: "😊",
-  nature: "🦄",
-  food: "🍔",
-  activities: "⚾️",
-  places: "✈️",
-  objects:"💡",
-  symbols: "🔣",
-  flags: "🏳️‍🌈"
-};
 
 const charFromUtf16 = utf16 =>
   String.fromCodePoint(...utf16.split("-").map(u => "0x" + u));
@@ -295,7 +308,7 @@ export default class EmojiSelector extends Component {
       </View>
     );
 
-    const title = searchQuery !== "" ? "Search Results" : category.name;
+    const title = searchQuery !== "" ? this.props.german ? 'SUCHERGEBNISSE' : "Search Results" : this.props.german ? category.de : category.name;
 
     return (
       <View style={styles.frame} {...other} onLayout={this.handleLayout}>
@@ -372,7 +385,9 @@ EmojiSelector.propTypes = {
   /** Number of columns accross */
   columns: PropTypes.number,
 
-  windowWidth: PropTypes.number.isRequired
+  windowWidth: PropTypes.number.isRequired,
+
+  german: PropTypes.bool.isRequired
 };
 EmojiSelector.defaultProps = {
   theme: "#007AFF",
