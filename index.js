@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Platform,
-  Dimensions,
   ActivityIndicator,
   FlatList
 } from "react-native";
@@ -16,47 +15,44 @@ import "string.fromcodepoint";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-export const Categories = {
-  all: {
-    symbol: null,
-    name: "All"
+const translations = {
+  de: {
+    all: 'Alle',
+    history: 'OFT BENUTZT',
+    people: 'SMILESYS & PERSONEN',
+    nature: 'TIERE & NATUR',
+    food: 'ESSEN & TRINKEN',
+    activities: 'AKTIVITÄT',
+    places: 'REISEN & ORTE',
+    objects: 'OBJEKTE',
+    symbols: 'SYMBOLE',
+    flags: 'FLAGGEN'
   },
-  history: {
-    symbol: "🕘",
-    name: "Recently used"
-  },
-  people: {
-    symbol: "😊",
-    name: "Smileys & People"
-  },
-  nature: {
-    symbol: "🦄",
-    name: "Animals & Nature"
-  },
-  food: {
-    symbol: "🍔",
-    name: "Food & Drink"
-  },
-  activities: {
-    symbol: "⚾️",
-    name: "Activities"
-  },
-  places: {
-    symbol: "✈️",
-    name: "Travel & Places"
-  },
-  objects: {
-    symbol: "💡",
-    name: "Objects"
-  },
-  symbols: {
-    symbol: "🔣",
-    name: "Symbols"
-  },
-  flags: {
-    symbol: "🏳️‍🌈",
-    name: "Flags"
+  en: {
+    all: 'ALL',
+    history: 'FREQUENTLY USED',
+    people: 'SMILESYS & PEOPLE',
+    nature: 'ANIMALS & NATURE',
+    food: 'FOOD & DRINK',
+    activities: 'ACTIVITY',
+    places: 'TRAVEL & PLACES',
+    objects: 'OBJECTS',
+    symbols: 'SYMBOLS',
+    flags: 'FLAGS'
   }
+}
+
+export const Categories = {
+  all: null,
+  history: "🕘",
+  people: "😊",
+  nature: "🦄",
+  food: "🍔",
+  activities: "⚾️",
+  places: "✈️",
+  objects:"💡",
+  symbols: "🔣",
+  flags: "🏳️‍🌈"
 };
 
 const charFromUtf16 = utf16 =>
@@ -66,10 +62,9 @@ const filteredEmojis = emoji.filter(e => !e["obsoleted_by"]);
 const emojiByCategory = category =>
   filteredEmojis.filter(e => e.category === category);
 const sortEmoji = list => list.sort((a, b) => a.sort_order - b.sort_order);
-const { width } = Dimensions.get("screen");
 const categoryKeys = Object.keys(Categories);
 
-const TabBar = ({ theme, activeCategory, onPress }) => {
+const TabBar = ({ theme, activeCategory, onPress, width }) => {
   const tabSize = width / categoryKeys.length;
 
   return categoryKeys.map(c => {
@@ -244,7 +239,7 @@ export default class EmojiSelector extends Component {
     this.setState(
       {
         emojiList,
-        colSize: Math.floor(width / this.props.columns)
+        colSize: Math.floor(this.props.windowWidth / this.props.columns)
       },
       cb
     );
@@ -279,6 +274,7 @@ export default class EmojiSelector extends Component {
       showSearchBar,
       showSectionTitles,
       showTabs,
+      windowWidth,
       ...other
     } = this.props;
 
@@ -309,6 +305,7 @@ export default class EmojiSelector extends Component {
               activeCategory={category}
               onPress={this.handleTabSelect}
               theme={theme}
+              width={windowWidth}
             />
           )}
         </View>
@@ -373,7 +370,9 @@ EmojiSelector.propTypes = {
   category: PropTypes.object,
 
   /** Number of columns accross */
-  columns: PropTypes.number
+  columns: PropTypes.number,
+
+  windowWidth: PropTypes.number.isRequired
 };
 EmojiSelector.defaultProps = {
   theme: "#007AFF",
